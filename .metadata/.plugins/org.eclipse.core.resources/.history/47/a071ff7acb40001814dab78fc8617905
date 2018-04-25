@@ -1,0 +1,248 @@
+
+/*A class named MyRectangle2D that contains:
+*  ■ Two double data fields named x and y that specify the center of the          *
+*   rectangle with getter and setter methods. (Assume that the rectangle sides   *
+*   are parallel to x- or y- axes.)                                              *
+* ■ The data fields width and height with getter and setter methods.             *
+* ■ A no-arg constructor that creates a default rectangle with (0, 0) for (x, y) *
+*   and 1 for both width and height.                                             *
+* ■ A constructor that creates a rectangle with the specified x, y, width, and   *
+*   height.                                                                      *
+* ■ A method getArea() that returns the area of the rectangle.                   *
+* ■ A method getPerimeter() that returns the perimeter of the rectangle.         *
+* ■ A method contains(double x, double y) that returns true if the specified     *
+*   point (x, y) is inside this rectangle (see Figure 10.24a).                   *
+* ■ A method contains(MyRectangle2D r) that returns true if the specified        *
+*   rectangle is inside this rectangle (see Figure 10.24b).                      *
+* ■ A method overlaps(MyRectangle2D r) that returns true if the specified        *
+*   rectangle overlaps with this rectangle (see Figure 10.24c).     
+*/
+
+import java.util.Scanner;
+
+public class C10E13 {
+
+	public static void main(String[] args) {
+		System.out.println("This program defines the MyRectangle2D class and makes a comparison of a test rectangle to a base one defined by the user");
+
+		Scanner input = new Scanner(System.in);
+		int outer = 1;
+
+		while (outer == 1) {
+			System.out.print("Enter the parameter of the base rectangle(Two points, width and height): ");
+			double base_x = input.nextDouble();
+			double base_y = input.nextDouble();
+			double base_width = input.nextDouble();
+			double base_height = input.nextDouble();
+
+			if (base_width <= 0 || base_height <= 0) {
+				System.out.println("The width and height must be positive.");
+			} else {
+				MyRectangle2D r1 = new MyRectangle2D(base_x, base_y, base_width, base_height);
+				System.out.println("Area: " + r1.getArea());
+				System.out.println("Perimeter: " + r1.getPerimeter());
+
+				int inner = 1;
+
+				while (inner == 1) {
+					System.out.print(
+							"Do you want to check for points or a rectangle(1 for points or 2 for rectangle)?: ");
+					int option = input.nextInt();
+
+					if (option == 1) {
+						System.out.print("Enter the two points you want to test: ");
+						double point_x = input.nextDouble();
+						double point_y = input.nextDouble();
+
+						if (r1.contains(point_x, point_y)) {
+							System.out.println(r1.contains(point_x, point_y) ? "The points entered are inside the rectangle"
+									: "The points entered are not in the rectangle.");
+						} 
+					} else if (option == 2) {
+						System.out.print("Enter the test rectangle(center point, width and height): ");
+						double test_x = input.nextDouble();
+						double test_y = input.nextDouble();
+						double test_width = input.nextDouble();
+						double test_height = input.nextDouble();
+
+						if (test_width <= 0 || test_height <= 0) {
+							System.out.println("The width and height must be positive.");
+						} else {
+							MyRectangle2D r2 = new MyRectangle2D(test_x, test_y, test_width, test_height);
+							if (r1.contains(r2)) {
+								System.out.println((r1.contains(r2)) ? "The tested rectangle contains the base one"
+										: "The tested rectangle does not contain the base one");
+							} 
+//							else if (r1.overlaps(r2)) {
+//								if (r1.abuts(r2)) {
+//									System.out.println("The tested rectangle abuts the base one.");
+//								}
+//								else {
+//									System.out.println("The tested rectangle overlaps the base one.");
+//								}
+//							}
+//							else if (r1.distincts(r2)) {
+//								System.out.println("The tested rectangle is outside the base one.");
+//							}
+//							else {System.out.println("EJ");}
+							if(r1.overlaps(r2)) {
+								System.out.println((r1.overlaps(r2)) ? "The tested rectangle overlaps the base one"
+										: "The tested rectangle does not overlap the base one");
+							}
+							
+							if(r1.abuts(r2)) {
+								System.out.println((r1.abuts(r2)) ? "The tested rectangle abuts the base one"
+										: "The tested rectangle does not abut the base one");
+							}
+							if(r1.distincts(r2)) {
+								System.out.println("The tested rectangle is outside the base one.");
+							}
+							
+							
+							}
+						}
+				else {
+						System.out.println("Um please enter either 1 or 2.");
+					}
+
+					System.out.print("Do you want to test for the same base rectangle(1 for yes or 0 for no)?: ");
+					inner = input.nextInt();
+				}
+			}
+
+			System.out.print("Do you want to set up another base rectangle(1 for yes or 0 for no)?: ");
+			outer = input.nextInt();
+		}
+		input.close();
+		System.out.println("Have a good day!");
+	}
+}
+
+class MyRectangle2D {
+	// Data fields
+	private double x;
+	private double y;
+	private double width;
+	private double height;
+
+	// Constructors
+	MyRectangle2D() {
+		this(0, 0, 1, 1);
+	}
+
+	MyRectangle2D(double x, double y, double width, double height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+
+	// Methods
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public void setY(double y) {
+		this.x = y;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public double getArea() {
+		return width * height;
+	}
+
+	public double getPerimeter() {
+		return 2 * (width + height);
+	}
+
+	public boolean contains(double x, double y) {
+		return getDistance(this.y, y) <= height / 2 && getDistance(this.x, x) <= width / 2;
+	}
+
+	public boolean contains(MyRectangle2D r) {
+		return getDistance(y, r.getY()) + r.getHeight() / 2 <= height / 2
+				&& getDistance(x, r.getX()) + r.getWidth() / 2 <= width / 2 && height / 2 + r.getHeight() / 2 <= height
+				&& width / 2 + r.getWidth() / 2 <= width;
+	}
+
+	public boolean overlaps(MyRectangle2D r) {
+		return !contains(r)
+				&& ((x + width / 2 > r.getX() - r.getWidth()) || (y + height / 2 > r.getY() - r.getHeight()))
+				&& (getDistance(y, r.getY()) < height / 2 + r.getHeight() / 2)
+				&& (getDistance(x, r.getX()) < width / 2 + r.getWidth() / 2);
+	}
+	
+	public boolean distincts(double x, double y) {
+		double deltaX = Math.abs(this.x - x);
+		double deltaY = Math.abs(this.y - y);
+		if (deltaX > width / 2 || deltaY > height / 2) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean abuts(MyRectangle2D r) {
+		double deltaX = Math.abs(this.x - r.x);
+		double deltaY = Math.abs(this.y - r.y);
+		double deltaWidth = (this.width + r.width) / 2;
+		double deltaHeight = (this.height + r.height) / 2;
+		
+		if (deltaX == deltaWidth && deltaY <= deltaHeight || deltaX <= deltaWidth && deltaY == deltaHeight) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean distincts(MyRectangle2D r) {
+		double r_x1 = r.x - r.width / 2;
+		double r_x2 = r.x + r.width / 2;
+		double r_y1 = r.y - r.height / 2;
+		double r_y2 = r.y + r.height / 2;
+		
+		double this_x1 = this.x - this.width / 2;
+		double this_x2 = this.x + this.width / 2;
+		double this_y1 = this.y - this.height / 2;
+		double this_y2 = this.y + this.height / 2;
+		
+		if (r.distincts(this_x1, this_y1) && r.distincts(this_x2, this_y1) &&
+				r.distincts(this_x1, this_y2) && r.distincts(this_x2, this_y2) &&
+				this.distincts(r_x1, r_y1) && this.distincts(r_x2, r_y1) &&
+				this.distincts(r_x1, r_y2) && this.distincts(r_x2, r_y2)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	private double getDistance(double p1, double p2) {
+		return Math.sqrt(Math.pow(p2 - p1, 2));
+	}
+}

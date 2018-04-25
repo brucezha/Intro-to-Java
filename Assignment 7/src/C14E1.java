@@ -1,0 +1,35 @@
+/* This program will display four images in a grid pane 
+ * 
+ */
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
+
+public class C14E1 extends Application{
+	public void start(Stage primaryStage) {
+		// Set up a GridPane
+		GridPane pane = new GridPane();
+
+		// Add all images
+		pane.add(new ImageView(new Image("uk.gif")), 0, 0);
+		pane.add(new ImageView(new Image("ca.gif")), 1, 0);
+		pane.add(new ImageView(new Image("china.gif")), 0, 1);
+		pane.add(new ImageView(new Image("us.gif")), 1, 1);
+
+		// Set up scene and stage
+		Scene scene = new Scene(pane);
+		primaryStage.setTitle("Exercise_14_01");
+		primaryStage.setScene(scene); 
+		primaryStage.show(); 
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("This program will displays four flags in a grid pane.");
+		Application.launch(args);
+	}
+}
